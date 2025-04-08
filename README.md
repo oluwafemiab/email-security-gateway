@@ -104,14 +104,14 @@ End-to-end secure email flow, from encryption to delivery, with filtering checkp
 
 A local DNS server (e.g., BIND or Axigen DNS) was configured with:
 
-- **MX Record:** `mail.securemail.test`
-- **A Record:** Points to Axigen IP (e.g., `192.168.10.5`)
+- **MX Record:** `mail.axigenproject.com`
+- **A Record:** Points to Axigen IP (e.g., `192.168.11.107`)
 - **SPF Record:** Prevents spoofing
 
 ```plaintext
 Type    | Host                | Points To
 --------|---------------------|---------------------
-A       | mail.axigenproject.com | 192.168.10.5
+A       | mail.axigenproject.com | 192.168.11.107
 MX      | @axigenproject.com     | mail.axigenproject.com
 TXT     | @axigenproject.com     | "v=spf1 mx -all"
 ```
