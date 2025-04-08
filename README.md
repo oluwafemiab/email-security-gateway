@@ -23,15 +23,6 @@ email-security-gateway/
 │   ├── data-flow.png
 │   ├── dns-setup.png
 │   ├── security-layers.png
-├── configs/
-│   ├── axigen-settings.conf
-│   ├── pmg-rules.conf
-│   ├── pgp-public-key.asc
-│   ├── pgp-private-key.asc
-├── traffic-captures/
-│   └── phishing-smtp-session.pcap
-├── report/
-│   └── project-report.pdf
 ```
 
 ---
