@@ -111,9 +111,9 @@ A local DNS server (e.g., BIND or Axigen DNS) was configured with:
 ```plaintext
 Type    | Host                | Points To
 --------|---------------------|---------------------
-A       | mail.securemail.test | 192.168.10.5
-MX      | @securemail.test     | mail.securemail.test
-TXT     | @securemail.test     | "v=spf1 mx -all"
+A       | mail.axigenproject.com | 192.168.10.5
+MX      | @axigenproject.com     | mail.axigenproject.com
+TXT     | @axigenproject.com     | "v=spf1 mx -all"
 ```
 
 ![DNS Setup](screenshots/dns-setup.png)
