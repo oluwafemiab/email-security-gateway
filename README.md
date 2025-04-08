@@ -19,6 +19,10 @@ email-security-gateway/
 │   ├── email-encrypted.png
 │   ├── wireshark-cleartext.png
 │   ├── wireshark-encrypted.png
+│   ├── network-topology.png
+│   ├── data-flow.png
+│   ├── dns-setup.png
+│   ├── security-layers.png
 ├── configs/
 │   ├── axigen-settings.conf
 │   ├── pmg-rules.conf
@@ -32,11 +36,20 @@ email-security-gateway/
 
 ---
 
-## 🧠 System Architecture
+## 🧠 Project Overview
+
+|                        | Details                                                                 |
+|------------------------|-------------------------------------------------------------------------|
+| **Objective**          | Build a secure email gateway to detect and block phishing & malware     |
+| **Approach**           | Combined encryption, filtering, and simulation to test architecture     |
+| **Tools Used**         | Axigen, Proxmox Mail Gateway, Thunderbird, GoPhish, PGP, Wireshark      |
+| **Core Defenses**      | Email encryption (PGP), spam/phishing filters, malware detection        |
+
+---
+
+## 🧩 System Architecture
 
 ![System Architecture](screenshots/architecture-diagram.png)
-
-> **Note:** If the image above doesn't load, ensure it’s located in the `/screenshots` folder and named `architecture-diagram.png`.
 
 ---
 
@@ -52,7 +65,7 @@ email-security-gateway/
 ![Encrypted Email](screenshots/email-encrypted.png)  
 ![Wireshark Encrypted](screenshots/wireshark-encrypted.png)
 
-> 🔍 Wireshark clearly exposes the content of unencrypted emails, while PGP-encrypted traffic is fully secure and unreadable during transit.
+> 🔍 Wireshark clearly exposes unencrypted emails but fails to decode PGP-secured ones — proving encryption integrity.
 
 ---
 
@@ -61,8 +74,9 @@ email-security-gateway/
 ![Captured Phishing Email](screenshots/phishing-captured.png)  
 ![PMG Dashboard](screenshots/pmg-dashboard.png)
 
-- Simulated spear-phishing emails using GoPhish
-- Proxmox Mail Gateway flagged, quarantined, or rejected high-risk emails based on filtering rules, attachments, and sender fingerprinting
+- Simulated phishing using GoPhish
+- Proxmox identified spoofing, links, and attachments
+- Results analyzed and confirmed in dashboards
 
 ---
 
@@ -76,22 +90,77 @@ email-security-gateway/
 
 ---
 
+## 🌐 Network Topology & Data Flow
+
+### 📡 Network Topology
+
+The lab simulates enterprise email communication and attacks.  
+Includes internal DNS, SMTP relay, phishing source, and traffic monitor.
+
+![Network Topology Diagram](screenshots/network-topology.png)
+
+---
+
+### 📈 Data Flow Diagram
+
+End-to-end secure email flow, from encryption to delivery, with filtering checkpoints.
+
+![Data Flow Diagram](screenshots/data-flow.png)
+
+---
+
+## 🌍 DNS Server Setup
+
+A local DNS server (e.g., BIND or Axigen DNS) was configured with:
+
+- **MX Record:** `mail.securemail.test`
+- **A Record:** Points to Axigen IP (e.g., `192.168.10.5`)
+- **SPF Record:** Prevents spoofing
+
+```plaintext
+Type    | Host                | Points To
+--------|---------------------|---------------------
+A       | mail.securemail.test | 192.168.10.5
+MX      | @securemail.test     | mail.securemail.test
+TXT     | @securemail.test     | "v=spf1 mx -all"
+```
+
+![DNS Setup](screenshots/dns-setup.png)
+
+---
+
+## 🔐 Security Layer Design
+
+Multi-layered security approach based on **Defense in Depth**.
+
+| Layer                 | Purpose                                  | Tools Used                |
+|----------------------|-------------------------------------------|---------------------------|
+| Application Layer    | PGP Encryption                            | Thunderbird + GnuPG       |
+| Transport Layer      | Secure SMTP Routing                       | Axigen Mail Server        |
+| Network Layer        | Spam/Phishing/Malware Filtering           | Proxmox Mail Gateway      |
+| DNS Layer            | Domain Trust & Routing                    | Internal DNS Server       |
+| Monitoring Layer     | Visibility & Traffic Inspection           | Wireshark, Snort (opt)    |
+
+![Security Layers Overview](screenshots/security-layers.png)
+
+---
+
 ## ⚙️ Quick Setup Summary
 
-1. Install **Axigen Mail Server** and configure domain + SMTP relay
-2. Set up **Thunderbird** with **GnuPG (PGP)** encryption
-3. Deploy **Proxmox Mail Gateway** as a filter and outbound/inbound scanner
-4. Launch phishing campaigns via **GoPhish**
-5. Analyze email sessions and encryption status using **Wireshark**
+1. 🛠 Install **Axigen** and configure SMTP routing  
+2. 🔐 Set up **PGP encryption** in Thunderbird with GnuPG  
+3. 🧱 Deploy **Proxmox Mail Gateway** and set filtering policies  
+4. 🎯 Simulate phishing with **GoPhish**  
+5. 🔍 Capture and analyze email traffic using **Wireshark**
 
 ---
 
 ## 📊 Results
 
-✅ PGP encryption confirmed effective using network capture  
-✅ GoPhish emails simulated advanced phishing attacks  
-✅ Proxmox detected malicious payloads, URLs, spoofing  
-✅ Secure email relay with layered defense demonstrated
+✅ **PGP encryption** verified with packet analysis  
+✅ **Phishing attacks** accurately simulated and flagged  
+✅ **Mail relay and routing** successfully tested across the system  
+✅ **Layered security** proved effective in blocking threats and protecting email integrity
 
 ---
 
@@ -100,7 +169,7 @@ email-security-gateway/
 - [Axigen Mail Server](https://www.axigen.com/mail-server/)
 - [Proxmox Mail Gateway](https://www.proxmox.com/en/proxmox-mail-gateway)
 - [GoPhish](https://getgophish.com/)
-- [Thunderbird](https://www.thunderbird.net/)
+- [Thunderbird Email Client](https://www.thunderbird.net/)
 - [Wireshark](https://www.wireshark.org/)
 - [GnuPG](https://gnupg.org/)
 
